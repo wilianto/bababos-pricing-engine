@@ -12,6 +12,6 @@ type PriceResponse struct {
 	RecommendedSupplierID int64   `json:"recommended_supplier_id"`
 }
 
-type PriceStrategy interface {
+type PricingStrategy interface {
 	GetPrice(req PriceRequest) (PriceResponse, error)
 }

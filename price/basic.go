@@ -4,12 +4,12 @@ import (
 	"github.com/wilianto/bababos-pricing-engine/customer"
 )
 
-type PricingBasicStrategy struct {
+type BasicPricingStrategy struct {
 	PriceRepository    IRepository
 	CustomerRepository customer.IRepository
 }
 
-func (s *PricingBasicStrategy) GetPrice(req PriceRequest) (PriceResponse, error) {
+func (s *BasicPricingStrategy) GetPrice(req PriceRequest) (PriceResponse, error) {
 	// Get customer city
 	customer, err := s.CustomerRepository.GetCustomer(req.CustomerID)
 	if err != nil {
