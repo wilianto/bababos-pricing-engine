@@ -30,15 +30,15 @@ func (r *MockCustomerRepository) GetCustomer(customerID int64) (*customer.Custom
 	}, nil
 }
 
-type PriceServiceTestSuite struct {
+type PricingBasicStrategyTestSuite struct {
 	suite.Suite
 }
 
-func TestPriceServiceTestSuite(t *testing.T) {
-	suite.Run(t, new(PriceServiceTestSuite))
+func TestPricingBasicStrategyTestSuite(t *testing.T) {
+	suite.Run(t, new(PricingBasicStrategyTestSuite))
 }
 
-func (s *PriceServiceTestSuite) TestGetPrice() {
+func (s *PricingBasicStrategyTestSuite) TestGetPrice() {
 	tests := []struct {
 		name           string
 		qty            int64
@@ -63,7 +63,7 @@ func (s *PriceServiceTestSuite) TestGetPrice() {
 	}
 	for _, tt := range tests {
 		s.T().Run(tt.name, func(t *testing.T) {
-			r := &PriceService{
+			r := &PricingBasicStrategy{
 				PriceRepository:    &MockPriceRepository{},
 				CustomerRepository: &MockCustomerRepository{},
 			}

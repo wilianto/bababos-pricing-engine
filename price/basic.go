@@ -4,24 +4,12 @@ import (
 	"github.com/wilianto/bababos-pricing-engine/customer"
 )
 
-type PriceRequest struct {
-	CustomerID int64  `json:"customer_id"`
-	SkuID      string `json:"sku_id"`
-	Qty        int64  `json:"qty"`
-	Unit       string `json:"unit"`
-}
-
-type PriceResponse struct {
-	SuggestedPrice        float64 `json:"suggested_price"`
-	RecommendedSupplierID int64   `json:"recommended_supplier_id"`
-}
-
-type PriceService struct {
+type PricingBasicStrategy struct {
 	PriceRepository    IRepository
 	CustomerRepository customer.IRepository
 }
 
-func (s *PriceService) GetPrice(req PriceRequest) (PriceResponse, error) {
+func (s *PricingBasicStrategy) GetPrice(req PriceRequest) (PriceResponse, error) {
 	// Get customer city
 	customer, err := s.CustomerRepository.GetCustomer(req.CustomerID)
 	if err != nil {
