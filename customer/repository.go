@@ -6,6 +6,10 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type IRepository interface {
+	GetCustomer(customerID int64) (*Customer, error)
+}
+
 type Customer struct {
 	ID        int64     `db:"id"`
 	Address   string    `db:"address"`

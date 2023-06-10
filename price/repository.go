@@ -2,6 +2,10 @@ package price
 
 import "github.com/jmoiron/sqlx"
 
+type IRepository interface {
+	FindLowestPrice(skuID string, state string) (*RecommendedPrice, error)
+}
+
 type PriceRepository struct {
 	DB *sqlx.DB
 }
