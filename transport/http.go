@@ -9,7 +9,7 @@ import (
 
 type HttpHandler struct {
 	BasicPricing price.PricingStrategy
-	SurgePricing price.SurgePricingStrategy
+	SurgePricing price.PricingStrategy
 }
 
 func (h *HttpHandler) GetPrice(c echo.Context) error {
