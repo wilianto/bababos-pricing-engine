@@ -11,6 +11,10 @@ import (
 )
 
 func main() {
+	runMigration()
+}
+
+func runMigration() {
 	// TODO: read from env
 	db, err := sql.Open("postgres", "postgres://postgres:password@localhost:5432/pricing_engine?sslmode=disable")
 	if err != nil {

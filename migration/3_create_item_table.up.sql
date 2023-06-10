@@ -1,0 +1,6 @@
+CREATE TABLE item (
+    sku_id VARCHAR(16) PRIMARY KEY, 
+    name VARCHAR(200) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+)
