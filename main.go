@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -17,7 +18,24 @@ import (
 )
 
 func main() {
-	runMigration()
+	args := os.Args[1:]
+
+	if len(args) == 0 {
+		runServer()
+		return
+	}
+
+	switch args[0] {
+	case "db:seed":
+		runSeed()
+	case "db:migrate":
+		runMigration()
+	default:
+		runServer()
+	}
+}
+
+func runServer() {
 	handler := initHandler()
 
 	e := echo.New()
@@ -71,4 +89,50 @@ func runMigration() {
 	}
 
 	fmt.Println("running migration success")
+}
+
+func runSeed() {
+	db, err := sqlx.Connect("postgres", "postgres://postgres:password@localhost:5432/pricing_engine?sslmode=disable")
+	if err != nil {
+		panic(fmt.Sprintf("error connecting to db due to %s", err.Error()))
+	}
+
+	custRow, err := db.Query("INSERT INTO customer (address, city, state) VALUES ('Jl. Raya Bogor', 'Bogor', 'Jawa Barat') RETURNING id")
+	if err != nil {
+		fmt.Printf("error inserting customer %v\n", err)
+	}
+	var custID int64
+	if custRow.Next() {
+		custRow.Scan(&custID)
+	}
+
+	supplierRow, err := db.Query("INSERT INTO supplier (address, city, state) VALUES ('Jl. Raya Bogor', 'Bogor', 'Jawa Barat') RETURNING id")
+	if err != nil {
+		fmt.Printf("error inserting supplier %v\n", err)
+	}
+	var supplierID int64
+	if supplierRow.Next() {
+		supplierRow.Scan(&supplierID)
+	}
+
+	skuID := "12345"
+	_, err = db.NamedQuery("INSERT INTO item (sku_id, name) VALUES (:sku_id, 'Besi')", map[string]interface{}{"sku_id": skuID})
+	if err != nil {
+		fmt.Printf("error inserting item %v\n", err)
+	}
+
+	_, err = db.NamedQuery("INSERT INTO price (sku_id, supplier_id, price) VALUES (:sku_id, :supplier_id, :price)", map[string]interface{}{
+		"sku_id":      skuID,
+		"supplier_id": supplierID,
+		"price":       10000,
+	})
+	if err != nil {
+		fmt.Printf("error inserting price %v\n", err)
+	}
+
+	fmt.Println("============ running seed success ============")
+	fmt.Printf("customer id: %d\n", custID)
+	fmt.Printf("supplier id: %d\n", supplierID)
+	fmt.Printf("sku id: %s\n", skuID)
+	fmt.Println("============ running seed success ============")
 }
