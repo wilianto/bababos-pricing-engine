@@ -71,7 +71,6 @@ func (s *BasicPricingStrategyTestSuite) TestGetPrice() {
 				SkuID:      "123456",
 				CustomerID: 1,
 				Qty:        tt.qty,
-				Unit:       "kg",
 			})
 			require.Equal(t, tt.wantErr, err)
 			require.Equal(t, tt.suggestedPrice, got.SuggestedPrice)

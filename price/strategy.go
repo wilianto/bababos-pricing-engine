@@ -4,7 +4,6 @@ type PriceRequest struct {
 	CustomerID int64  `json:"customer_id"`
 	SkuID      string `json:"sku_id"`
 	Qty        int64  `json:"qty"`
-	Unit       string `json:"unit"`
 }
 
 type PriceResponse struct {
