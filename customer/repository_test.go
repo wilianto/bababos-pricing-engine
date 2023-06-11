@@ -31,7 +31,7 @@ func (s *CustomerRepositoryTestSuite) TearDownSuite() {
 }
 
 func (s *CustomerRepositoryTestSuite) TestGetCustomer() {
-	row, err := s.DB.Query("INSERT INTO customer (address, city, state) VALUES ('address', 'city', 'state') RETURNING id", Customer{})
+	row, err := s.DB.Query("INSERT INTO customer (address, city, state) VALUES ('address', 'city', 'state') RETURNING id")
 	require.NoError(s.T(), err)
 
 	var insertedCustomerID int64
